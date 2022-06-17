@@ -108,6 +108,7 @@ namespace WInForm_Magic_Square
 
                 if((check_x < 0) || (check_y > grid_size)) // 행 또는 열이 넘어갔을 때
                 {
+
                     if (check_x < 0 && check_y < grid_size)  // 행만 넘어갔을 때
                     {
                         check_x = grid_size;
@@ -118,15 +119,25 @@ namespace WInForm_Magic_Square
                     }
                     if((check_x < 0) && (check_y > grid_size)) // 행, 열 둘 다 넘어갔을 때
                     {
-
+                        check_x = org_x + 1;
+                        check_y = org_y;
                     }                        
                 }
                 
 
-                if()  // 숫자가 있을 때
+                if((int)table.Rows[check_x][check_y] != 0)  // 숫자가 있을 때
                 {
-
+                    check_x = org_x + 1;
+                    check_y = org_y;
                 }
+
+                table.Rows[check_x][check_y] = i;  // 숫자 입력
+
+                org_x = check_x; // 이전 위치 최신화
+                org_y = check_y;
+
+                check_x = check_x - 1;  // 다음 위치 탐색
+                check_y = check_y + 1;
             }
 
 

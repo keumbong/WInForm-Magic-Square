@@ -95,23 +95,22 @@ namespace WInForm_Magic_Square
             for (int i = 2; i <= count; i++) // 칸 숫자 -1 횟수 만큼 반복 (1회는 초기 최상단 가운데열 지정되있음)
             {
 
-               
+
                 if ((checkrow < 0) && (checkcol <= grid_size))  // 행만 넘어갔을 때
                 {
                     checkrow = grid_size;
                 }
-                
-                if((checkrow >= 0) && (checkcol > grid_size))  // 열만 넘어갔을 때
+
+                if ((checkrow >= 0) && (checkcol > grid_size))  // 열만 넘어갔을 때
                 {
                     checkcol = 0;
                 }
-                
 
-                if()  // 숫자가 있을 때
+                if ((checkrow < 0) && (checkcol > grid_size))  // 행, 열 모두 넘어갔을 때
                 {
-
+                    checkrow = originrow + 1;
+                    checkcol = origincol;
                 }
-            }
 
                 if ((int)table.Rows[checkrow][checkcol] != 0)  // 숫자가 있을 때
                 {
@@ -119,7 +118,7 @@ namespace WInForm_Magic_Square
                     checkcol = origincol;
                 }
 
-
+            
                 table.Rows[checkrow][checkcol] = i;  // 숫자 채워넣기
 
                 originrow = checkrow; // 이전 위치 최신화

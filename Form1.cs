@@ -8,18 +8,10 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-
-// 그리드 -> DataGridView 실패 (size를 입력 받아도 행,열 추가 x)
-// 페널 -> TableLayoutPanel 실패 (입력으로 행, 열 추가 x)
-
 namespace WInForm_Magic_Square
 {
-
-
-
     public partial class Form1 : Form
-    {
-        
+    {      
 
         public Form1()
         {
@@ -30,7 +22,7 @@ namespace WInForm_Magic_Square
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if (int.Parse(textBox1.Text) % 2 != 1) // 짝수 입력 방지 && 3이상의 수 입력
+            if (int.Parse(textBox1.Text) % 2 != 1) // 짝수 입력 방지
             {
                 MessageBox.Show("홀수가 아닙니다.");
                 return;
@@ -43,13 +35,13 @@ namespace WInForm_Magic_Square
             }
 
 
-            int size = int.Parse(textBox1.Text);
+            int size = int.Parse(textBox1.Text);  // 크기를 size에 저장
 
 
+            DataTable table = new DataTable(); // 데이터 테이블 생성
 
             //DataGridView dgv = new DataGridView();
 
-            DataTable table = new DataTable(); // 데이터 테이블 생성
             //table.Columns.Add("c1", typeof(string));
             //table.Columns.Add("c2", typeof(string));
             //table.Columns.Add("c3", typeof(string));
@@ -66,9 +58,7 @@ namespace WInForm_Magic_Square
                 table.Rows.Add();
             }
 
-
-
-            dataGridView1.AutoSizeColumnsMode =DataGridViewAutoSizeColumnsMode.AllCells; // 열 크기 조정
+            dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells; // 열 크기 조정
 
             //table.Rows.Add("1", "2", "3", "4", "5");
             //table.Rows.Add("1", "2", "3", "4", "5");
@@ -87,79 +77,56 @@ namespace WInForm_Magic_Square
                 }
 
 
-
-            int x = 0;  // 최초 위치(x) - 최상단 행
-            int y = size / 2; // 최초 위치(y) - 가운데 열
+            int row = 0;  // 최초 위치(row) - 최상단 행
+            int col = size / 2; // 최초 위치(col) - 가운데 열
 
             
-            table.Rows[x][y] = 1;  // 최상단 행의 가운데 열에 1 입력        
+            table.Rows[row][col] = 1;  // 최상단 행의 가운데 열에 1 입력        
              
 
-            int check_x  = x - 1; // 다음 위치 확인 좌표
-            int check_y  = y + 1;
+            int checkrow  = row - 1; // 다음 위치 확인 좌표
+            int checkcol  = col + 1;
 
-            int org_x = x; // 이전 위치 좌표
-            int org_y = y;
+            int originrow = row; // 이전 위치 좌표
+            int origincol = col;
 
-            int grid_size = size - 1; // 그리드 내에서 사이즈
+            int grid_size = size - 1; // 배열이 0부터 시작하므로 size - 1
 
-            for (int i = 2; i <= count; i++) // 칸 숫자 -1 횟수 만큼 반복
+            for (int i = 2; i <= count; i++) // 칸 숫자 -1 횟수 만큼 반복 (1회는 초기 최상단 가운데열 지정되있음)
             {
 
-                if((check_x < 0) || (check_y > grid_size)) // 행 또는 열이 넘어갔을 때
+               
+                if ((checkrow < 0) && (checkcol <= grid_size))  // 행만 넘어갔을 때
                 {
-                    if (check_x < 0 && check_y < grid_size)  // 행만 넘어갔을 때
-                    {
-                        check_x = grid_size;
-                    }
-                    if(check_y > grid_size && check_x < grid_size)  // 열만 넘어갔을 때
-                    {
-                        check_y = 0;
-                    }
-                    if((check_x < 0) && (check_y > grid_size)) // 행, 열 둘 다 넘어갔을 때
-                    {
-
-                    }                        
+                    checkrow = grid_size;
                 }
                 
-
-                if()  // 숫자가 있을 때
+                if((checkrow >= 0) && (checkcol > grid_size))  // 열만 넘어갔을 때
                 {
-
+                    checkcol = 0;
+                }
+                
+                if((checkrow < 0) && (checkcol > grid_size)) // 행, 열 둘 다 넘어갔을 때
+                {
+                    checkrow = originrow + 1;
+                    checkcol = origincol;
                 }
 
-                table.Rows[check_x][check_y] = i;  // 숫자 채워넣기
+                if ((int)table.Rows[checkrow][checkcol] != 0)  // 숫자가 있을 때
+                {
+                    checkrow = originrow + 1;
+                    checkcol = origincol;
+                }
 
+
+                table.Rows[checkrow][checkcol] = i;  // 숫자 채워넣기
+
+                originrow = checkrow; // 이전 위치 최신화
+                origincol = checkcol;
+
+                checkrow -= 1;  // 다음 위치 탐색
+                checkcol += 1;
             }
-
-
-
-
-
-
-
-            int check; 
-            table.Rows[2][2] = 55;
-            
-
-            check = (int)table.Rows[2][2];
-
-            if ((int)table.Rows[2][2] == check)
-            {
-                table.Rows[1][1] = 10;
-            }
-
-
-
-            //int[,] arr = new int[size, size];  // 입력 받은size 크기 만큼의 2차원 배열 생성
-            
-
-
-
-
-
-            //next_x = next_x - 1;
-            //next_y = next_y + 1;
 
 
         }
@@ -172,9 +139,5 @@ namespace WInForm_Magic_Square
             }
         }
 
-        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
     }
 }

@@ -106,11 +106,12 @@ namespace WInForm_Magic_Square
                     checkcol = 0;
                 }
                 
-                if((checkrow < 0) && (checkcol > grid_size)) // 행, 열 둘 다 넘어갔을 때
+
+                if()  // 숫자가 있을 때
                 {
-                    checkrow = originrow + 1;
-                    checkcol = origincol;
+
                 }
+            }
 
                 if ((int)table.Rows[checkrow][checkcol] != 0)  // 숫자가 있을 때
                 {
